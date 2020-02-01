@@ -33,6 +33,7 @@ def init_random_params(scale, layer_sizes, rng=npr.RandomState(0)):
   return [(scale * rng.randn(m, n), scale * rng.randn(n))
           for m, n, in zip(layer_sizes[:-1], layer_sizes[1:])]
 
+
 def predict(params, inputs):
   activations = inputs
   for w, b in params[:-1]:
@@ -43,10 +44,12 @@ def predict(params, inputs):
   logits = np.dot(activations, final_w) + final_b
   return logits - logsumexp(logits, axis=1, keepdims=True)
 
+
 def loss(params, batch):
   inputs, targets = batch
   preds = predict(params, inputs)
   return -np.mean(np.sum(preds * targets, axis=1))
+
 
 def accuracy(params, batch):
   inputs, targets = batch

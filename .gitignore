@@ -8,6 +8,7 @@
 .DS_Store
 build/
 dist/
+venv/
 .mypy_cache/
 docs/notebooks/.ipynb_checkpoints/
 docs/_autosummary
