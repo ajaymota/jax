@@ -22,17 +22,25 @@ optimization.
 import time
 import itertools
 
+import pandas as pd
+
 import numpy.random as npr
+import numpy as onp
 
 import jax.numpy as np
 from jax import jit, grad, random
 from jax.experimental import optimizers
 from jax.experimental import stax
-from jax.experimental.stax import Dense, Relu, LogSoftmax
+from jax.experimental.stax import Dense, Sigmoid, LogSoftmax
 from examples import datasets
 
+eigenvalues1 = []
+eigenvalues2 = []
+train_loss_arr = []
+test_loss_arr = []
 
-def get_eigenvalue(matrix):
+
+def get_eigenvalues(matrix):
     return np.linalg.eigvalsh(np.diag(matrix))
 
 
@@ -50,7 +58,7 @@ def accuracy(params, batch):
 
 
 init_random_params, predict = stax.serial(
-    Dense(300), Relu,
+    Dense(300), Sigmoid,
     Dense(10), LogSoftmax)
 
 if __name__ == "__main__":
@@ -108,12 +116,36 @@ if __name__ == "__main__":
         print("Training set accuracy {}".format(train_acc))
         print("Test set accuracy {}".format(test_acc))
         
+        train_loss = loss(params, (train_images, train_labels))
+        test_loss = loss(params, (test_images, test_labels))
+        print("Training set loss {}".format(train_loss))
+        print("Test set loss {}".format(test_loss))
+        
+        train_loss_arr.append(train_loss)
+        test_loss_arr.append(test_loss)
+        print()
+        
         # params[0][0].shape = (784, 300)   -> Input edge weights
         # params[0][1].shape = (300, )      -> Hidden layer 1
         # params[2][0].shape = (300, 10)    -> Output edge weights
         # params[2][1].shape = (10, )       -> Output layer
-
-        print("Eigenvalues for Hidden Layer: {}".format(get_eigenvalue(params[0][1])))
-        print("Eigenvalues for Output Layer: {}".format(get_eigenvalue(params[2][1])))
-        print()
-
+        eigv1 = onp.asarray(get_eigenvalues(params[0][1]))
+        eigv2 = onp.asarray(get_eigenvalues(params[2][1]))
+        
+        # print("Eigenvalues for Hidden Layer: {}".format(eigv1))
+        # print("Eigenvalues for Output Layer: {}".format(eigv2))
+        # print()
+        
+        eigenvalues1.append(eigv1)
+        eigenvalues2.append(eigv2)
+    
+    df1 = pd.DataFrame(data=eigenvalues1)
+    df2 = pd.DataFrame(data=eigenvalues2)
+    df3 = pd.DataFrame(data=train_loss_arr)
+    df4 = pd.DataFrame(data=test_loss_arr)
+    
+    df1.to_csv("results/sgmd_L1.csv", index_label=False)
+    df2.to_csv("results/sgmd_L2.csv", index_label=False)
+    df3.to_csv("results/sgmd_train_loss.csv", index_label=False)
+    df4.to_csv("results/sgmd_test_loss.csv", index_label=False)
+    # print(eigenvalues2)
