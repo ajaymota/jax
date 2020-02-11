@@ -116,13 +116,6 @@ if __name__ == "__main__":
         print("Training set accuracy {}".format(train_acc))
         print("Test set accuracy {}".format(test_acc))
 
-        print(len(params))
-        print(len(params[0]))
-        print(len(params[1]))
-        print(len(params[2]))
-        print(len(params[3]))
-        break
-
         train_loss = loss(params, (train_images, train_labels))
         test_loss = loss(params, (test_images, test_labels))
         print("Training set loss {}".format(train_loss))
