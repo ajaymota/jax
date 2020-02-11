@@ -76,12 +76,17 @@ def mnist_raw():
   return train_images, train_labels, test_images, test_labels
 
 
-def mnist(permute_train=False):
+def mnist(permute_train=False, flatten=True):
   """Download, parse and process MNIST data to unit scale and one-hot labels."""
   train_images, train_labels, test_images, test_labels = mnist_raw()
 
-  train_images = _partial_flatten(train_images) / np.float32(255.)
-  test_images = _partial_flatten(test_images) / np.float32(255.)
+  if flatten:
+    train_images = _partial_flatten(train_images) / np.float32(255.)
+    test_images = _partial_flatten(test_images) / np.float32(255.)
+  else:
+    train_images = train_images / np.float32(255.)
+    test_images = test_images / np.float32(255.)
+    
   train_labels = _one_hot(train_labels, 10)
   test_labels = _one_hot(test_labels, 10)
 
