@@ -32,7 +32,7 @@ import jax.numpy as np
 from jax import jit, grad, random
 from jax.experimental import optimizers
 from jax.experimental import stax
-from jax.experimental.stax import Dense, Relu, LogSoftmax, Conv, MaxPool, Flatten
+from jax.experimental.stax import Dense, Tanh, LogSoftmax, Conv, MaxPool, Flatten
 
 eigenvalues0 = []
 eigenvalues1 = []
@@ -68,7 +68,7 @@ def accuracy(params, batch):
 
 
 init_random_params, predict = stax.serial(
-    Conv(10, (5, 5), (1, 1)), Relu,
+    Conv(10, (5, 5), (1, 1)), Tanh,
     MaxPool((4, 4)), Flatten,
     Dense(10), LogSoftmax)
 
@@ -132,7 +132,7 @@ if __name__ == "__main__":
         print("Epoch {} in {:0.2f} sec".format(epoch, epoch_time))
         print("Training set accuracy {}".format(train_acc))
         print("Test set accuracy {}".format(test_acc))
-
+        
         # print(len(params))
         # print(params[0][0].shape)
         # print(params[0][0])
@@ -140,7 +140,7 @@ if __name__ == "__main__":
         # # print(np.transpose(x))
         # print(np.transpose(x).swapaxes(1, 2))
         # break
-
+        
         train_loss = loss(params, (train_images, train_labels))
         test_loss = loss(params, (test_images, test_labels))
         print("Training set loss {}".format(train_loss))
@@ -192,17 +192,17 @@ if __name__ == "__main__":
     df11 = pd.DataFrame(data=test_loss_arr)
     df12 = pd.DataFrame(data=test_class_loss_arr)
 
-    df0.to_csv("results/cnn_relu_K0.csv", index_label=False)
-    df1.to_csv("results/cnn_relu_K1.csv", index_label=False)
-    df2.to_csv("results/cnn_relu_K2.csv", index_label=False)
-    df3.to_csv("results/cnn_relu_K3.csv", index_label=False)
-    df4.to_csv("results/cnn_relu_K4.csv", index_label=False)
-    df5.to_csv("results/cnn_relu_K5.csv", index_label=False)
-    df6.to_csv("results/cnn_relu_K6.csv", index_label=False)
-    df7.to_csv("results/cnn_relu_K7.csv", index_label=False)
-    df8.to_csv("results/cnn_relu_K8.csv", index_label=False)
-    df9.to_csv("results/cnn_relu_K9.csv", index_label=False)
-    df10.to_csv("results/cnn_relu_train_loss.csv", index_label=False)
-    df11.to_csv("results/cnn_relu_test_loss.csv", index_label=False)
-    df12.to_csv("results/cnn_relu_test_class_loss.csv", index_label=False)
+    df0.to_csv("results/cnn_tanh_K0.csv", index_label=False)
+    df1.to_csv("results/cnn_tanh_K1.csv", index_label=False)
+    df2.to_csv("results/cnn_tanh_K2.csv", index_label=False)
+    df3.to_csv("results/cnn_tanh_K3.csv", index_label=False)
+    df4.to_csv("results/cnn_tanh_K4.csv", index_label=False)
+    df5.to_csv("results/cnn_tanh_K5.csv", index_label=False)
+    df6.to_csv("results/cnn_tanh_K6.csv", index_label=False)
+    df7.to_csv("results/cnn_tanh_K7.csv", index_label=False)
+    df8.to_csv("results/cnn_tanh_K8.csv", index_label=False)
+    df9.to_csv("results/cnn_tanh_K9.csv", index_label=False)
+    df10.to_csv("results/cnn_tanh_train_loss.csv", index_label=False)
+    df11.to_csv("results/cnn_tanh_test_loss.csv", index_label=False)
+    df12.to_csv("results/cnn_tanh_test_class_loss.csv", index_label=False)
 

@@ -32,7 +32,7 @@ import jax.numpy as np
 from jax import jit, grad, random
 from jax.experimental import optimizers
 from jax.experimental import stax
-from jax.experimental.stax import Dense, Relu, LogSoftmax, Conv, MaxPool, Flatten
+from jax.experimental.stax import Dense, Relu, LogSoftmax, Conv, MaxPool, Flatten, Dropout
 
 eigenvalues0 = []
 eigenvalues1 = []
@@ -49,27 +49,30 @@ train_loss_arr = []
 test_loss_arr = []
 test_class_loss_arr = []
 
+dropout_rate = 0.6
+
 
 def get_eigenvalues(matrix):
     return np.linalg.eigvalsh(matrix)
 
 
-def loss(params, batch):
+def loss(params, batch, rng):
     inputs, targets = batch
-    preds = predict(params, inputs)
+    preds = predict(params, inputs, rng=rng)
     return -np.mean(np.sum(preds * targets, axis=1))
 
 
-def accuracy(params, batch):
+def accuracy(params, batch, rng):
     inputs, targets = batch
     target_class = np.argmax(targets, axis=1)
-    predicted_class = np.argmax(predict(params, inputs), axis=1)
+    predicted_class = np.argmax(predict(params, inputs, rng=rng), axis=1)
     return np.mean(predicted_class == target_class)
 
 
 init_random_params, predict = stax.serial(
     Conv(10, (5, 5), (1, 1)), Relu,
     MaxPool((4, 4)), Flatten,
+    Dropout(dropout_rate),
     Dense(10), LogSoftmax)
 
 if __name__ == "__main__":
@@ -112,7 +115,7 @@ if __name__ == "__main__":
     @jit
     def update(i, opt_state, batch):
         params = get_params(opt_state)
-        return opt_update(i, grad(loss)(params, batch), opt_state)
+        return opt_update(i, grad(loss)(params, batch, rng), opt_state)
     
     
     _, init_params = init_random_params(rng, input_shape)
@@ -127,8 +130,8 @@ if __name__ == "__main__":
         epoch_time = time.time() - start_time
         
         params = get_params(opt_state)
-        train_acc = accuracy(params, (train_images, train_labels))
-        test_acc = accuracy(params, (test_images, test_labels))
+        train_acc = accuracy(params, (train_images, train_labels), rng)
+        test_acc = accuracy(params, (test_images, test_labels), rng)
         print("Epoch {} in {:0.2f} sec".format(epoch, epoch_time))
         print("Training set accuracy {}".format(train_acc))
         print("Test set accuracy {}".format(test_acc))
@@ -141,8 +144,8 @@ if __name__ == "__main__":
         # print(np.transpose(x).swapaxes(1, 2))
         # break
 
-        train_loss = loss(params, (train_images, train_labels))
-        test_loss = loss(params, (test_images, test_labels))
+        train_loss = loss(params, (train_images, train_labels), rng)
+        test_loss = loss(params, (test_images, test_labels), rng)
         print("Training set loss {}".format(train_loss))
         print("Test set loss {}".format(test_loss))
 
@@ -192,17 +195,17 @@ if __name__ == "__main__":
     df11 = pd.DataFrame(data=test_loss_arr)
     df12 = pd.DataFrame(data=test_class_loss_arr)
 
-    df0.to_csv("results/cnn_relu_K0.csv", index_label=False)
-    df1.to_csv("results/cnn_relu_K1.csv", index_label=False)
-    df2.to_csv("results/cnn_relu_K2.csv", index_label=False)
-    df3.to_csv("results/cnn_relu_K3.csv", index_label=False)
-    df4.to_csv("results/cnn_relu_K4.csv", index_label=False)
-    df5.to_csv("results/cnn_relu_K5.csv", index_label=False)
-    df6.to_csv("results/cnn_relu_K6.csv", index_label=False)
-    df7.to_csv("results/cnn_relu_K7.csv", index_label=False)
-    df8.to_csv("results/cnn_relu_K8.csv", index_label=False)
-    df9.to_csv("results/cnn_relu_K9.csv", index_label=False)
-    df10.to_csv("results/cnn_relu_train_loss.csv", index_label=False)
-    df11.to_csv("results/cnn_relu_test_loss.csv", index_label=False)
-    df12.to_csv("results/cnn_relu_test_class_loss.csv", index_label=False)
+    df0.to_csv("results/dropout/" + str(dropout_rate) + "/cnn_relu_K0.csv", index_label=False)
+    df1.to_csv("results/dropout/" + str(dropout_rate) + "/cnn_relu_K1.csv", index_label=False)
+    df2.to_csv("results/dropout/" + str(dropout_rate) + "/cnn_relu_K2.csv", index_label=False)
+    df3.to_csv("results/dropout/" + str(dropout_rate) + "/cnn_relu_K3.csv", index_label=False)
+    df4.to_csv("results/dropout/" + str(dropout_rate) + "/cnn_relu_K4.csv", index_label=False)
+    df5.to_csv("results/dropout/" + str(dropout_rate) + "/cnn_relu_K5.csv", index_label=False)
+    df6.to_csv("results/dropout/" + str(dropout_rate) + "/cnn_relu_K6.csv", index_label=False)
+    df7.to_csv("results/dropout/" + str(dropout_rate) + "/cnn_relu_K7.csv", index_label=False)
+    df8.to_csv("results/dropout/" + str(dropout_rate) + "/cnn_relu_K8.csv", index_label=False)
+    df9.to_csv("results/dropout/" + str(dropout_rate) + "/cnn_relu_K9.csv", index_label=False)
+    df10.to_csv("results/dropout/" + str(dropout_rate) + "/cnn_relu_train_loss.csv", index_label=False)
+    df11.to_csv("results/dropout/" + str(dropout_rate) + "/cnn_relu_test_loss.csv", index_label=False)
+    df12.to_csv("results/dropout/" + str(dropout_rate) + "/cnn_relu_test_class_loss.csv", index_label=False)
 
