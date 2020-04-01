@@ -50,8 +50,8 @@ test_loss_arr = []
 test_class_loss_arr = []
 
 dropout_rate = 0.4
-activator = "tanh"
-Activator = Tanh
+activator = "sgmd"
+Activator = Sigmoid
 
 
 def get_eigenvalues(matrix):
@@ -73,8 +73,8 @@ def accuracy(params, batch, rng):
 
 init_random_params, predict = stax.serial(
     Conv(10, (5, 5), (1, 1)), Activator,
-    MaxPool((4, 4)), Flatten,
     Dropout(dropout_rate),
+    MaxPool((4, 4)), Flatten,
     Dense(10), LogSoftmax)
 
 if __name__ == "__main__":
@@ -192,7 +192,7 @@ if __name__ == "__main__":
     df7 = pd.DataFrame(data=eigenvalues7)
     df8 = pd.DataFrame(data=eigenvalues8)
     df9 = pd.DataFrame(data=eigenvalues9)
-    
+
     df10 = pd.DataFrame(data=train_loss_arr)
     df11 = pd.DataFrame(data=test_loss_arr)
     df12 = pd.DataFrame(data=test_class_loss_arr)
