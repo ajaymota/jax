@@ -19,7 +19,7 @@ the mini-library jax.experimental.optimizers is for first-order stochastic
 optimization.
 """
 
-from dnet import mnist_data
+from mnist.dnet import mnist_data
 import time
 import itertools
 
@@ -32,7 +32,7 @@ import jax.numpy as np
 from jax import jit, grad, random
 from jax.experimental import optimizers
 from jax.experimental import stax
-from jax.experimental.stax import Dense, Relu, Sigmoid, Tanh, LogSoftmax, Conv, MaxPool, Flatten, Dropout
+from jax.experimental.stax import Dense, Sigmoid, LogSoftmax, Conv, MaxPool, Flatten, Dropout
 
 eigenvalues0 = []
 eigenvalues1 = []

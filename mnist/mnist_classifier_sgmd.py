@@ -31,8 +31,8 @@ import jax.numpy as np
 from jax import jit, grad, random
 from jax.experimental import optimizers
 from jax.experimental import stax
-from jax.experimental.stax import Dense, Relu, LogSoftmax
-from examples import datasets
+from jax.experimental.stax import Dense, Sigmoid, LogSoftmax
+from mnist.examples import datasets
 
 eigenvalues1 = []
 eigenvalues2 = []
@@ -58,7 +58,7 @@ def accuracy(params, batch):
 
 
 init_random_params, predict = stax.serial(
-    Dense(300), Relu,
+    Dense(300), Sigmoid,
     Dense(10), LogSoftmax)
 
 if __name__ == "__main__":
@@ -115,7 +115,7 @@ if __name__ == "__main__":
         print("Epoch {} in {:0.2f} sec".format(epoch, epoch_time))
         print("Training set accuracy {}".format(train_acc))
         print("Test set accuracy {}".format(test_acc))
-
+        
         train_loss = loss(params, (train_images, train_labels))
         test_loss = loss(params, (test_images, test_labels))
         print("Training set loss {}".format(train_loss))
@@ -131,21 +131,21 @@ if __name__ == "__main__":
         # params[2][1].shape = (10, )       -> Output layer
         eigv1 = onp.asarray(get_eigenvalues(params[0][1]))
         eigv2 = onp.asarray(get_eigenvalues(params[2][1]))
-
+        
         # print("Eigenvalues for Hidden Layer: {}".format(eigv1))
         # print("Eigenvalues for Output Layer: {}".format(eigv2))
         # print()
         
         eigenvalues1.append(eigv1)
         eigenvalues2.append(eigv2)
-        
+    
     df1 = pd.DataFrame(data=eigenvalues1)
     df2 = pd.DataFrame(data=eigenvalues2)
     df3 = pd.DataFrame(data=train_loss_arr)
     df4 = pd.DataFrame(data=test_loss_arr)
     
-    df1.to_csv("results/relu_L1.csv", index_label=False)
-    df2.to_csv("results/relu_L2.csv", index_label=False)
-    df3.to_csv("results/relu_train_loss.csv", index_label=False)
-    df4.to_csv("results/relu_test_loss.csv", index_label=False)
+    df1.to_csv("results/sgmd_L1.csv", index_label=False)
+    df2.to_csv("results/sgmd_L2.csv", index_label=False)
+    df3.to_csv("results/sgmd_train_loss.csv", index_label=False)
+    df4.to_csv("results/sgmd_test_loss.csv", index_label=False)
     # print(eigenvalues2)

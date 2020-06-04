@@ -5,7 +5,7 @@ import jax.numpy as tensor
 import pandas as pd
 
 
-def tiny_mnist(flatten: bool = True, one_hot_encoding: bool = True,
+def fashion_mnist(flatten: bool = True, one_hot_encoding: bool = True,
                data_dir: str = os.path.join("datasets", "fashion_mnist")):
     path = Path(data_dir)
     train_data = tensor.asarray(pd.read_csv(path / "train.csv", header=None).values, dtype=tensor.float32)
