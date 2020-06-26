@@ -55,7 +55,7 @@ Activator = Tanh
 
 
 def get_eigenvalues(matrix):
-    return np.linalg.eigvalsh(matrix)
+    return np.linalg.eigvals(matrix).real
 
 
 def loss(params, batch, rng):
@@ -75,7 +75,7 @@ init_random_params, predict = stax.serial(
     Conv(10, (5, 5), (1, 1)), Activator,
     Dropout(dropout_rate),
     MaxPool((4, 4)), Flatten,
-    Dense(10), LogSoftmax)
+    Dense(24), LogSoftmax)
 
 if __name__ == "__main__":
     rng = random.PRNGKey(0)

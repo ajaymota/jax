@@ -1,0 +1,9 @@
+1. Effect of dropout on movement of eigenvalues
+2. Difference between eigenvalues for each activation function
+3. Difference between eigenvalues for different but similar datasets
+4. FFN v/s CNN eigenvalues
+5. values of eigenvalues and their movement
+6. relation of eigenvalues on error
+
+activation functions, mnist, cnn, dropout, correlation, kernels, 
+distance function, matrix norm, eigenvalues

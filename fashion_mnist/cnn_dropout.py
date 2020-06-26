@@ -49,13 +49,13 @@ train_loss_arr = []
 test_loss_arr = []
 test_class_loss_arr = []
 
-dropout_rate = 0.8
-activator = "tanh"
-Activator = Tanh
+dropout_rate = 0.4
+activator = "sgmd"
+Activator = Sigmoid
 
 
 def get_eigenvalues(matrix):
-    return np.linalg.eigvalsh(matrix)
+    return np.linalg.eigvals(matrix).real
 
 
 def loss(params, batch, rng):

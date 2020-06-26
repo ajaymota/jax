@@ -49,12 +49,12 @@ train_loss_arr = []
 test_loss_arr = []
 test_class_loss_arr = []
 
-activator = "tanh"
-Activator = Tanh
+activator = "relu"
+Activator = Relu
 
 
 def get_eigenvalues(matrix):
-    return np.linalg.eigvalsh(matrix)
+    return np.linalg.eigvals(matrix).real
 
 
 def loss(params, batch):

@@ -19,7 +19,7 @@ the mini-library jax.experimental.optimizers is for first-order stochastic
 optimization.
 """
 
-from mnist.dnet import mnist_data
+from dnet import mnist_data
 import time
 import itertools
 
@@ -32,7 +32,7 @@ import jax.numpy as np
 from jax import jit, grad, random
 from jax.experimental import optimizers
 from jax.experimental import stax
-from jax.experimental.stax import Dense, Sigmoid, LogSoftmax, Conv, MaxPool, Flatten
+from jax.experimental.stax import Dense, Sigmoid, Relu, Tanh, LogSoftmax, Conv, MaxPool, Flatten
 
 eigenvalues0 = []
 eigenvalues1 = []
@@ -49,12 +49,12 @@ train_loss_arr = []
 test_loss_arr = []
 test_class_loss_arr = []
 
-activator = "sgmd"
-Activator = Sigmoid
+activator = "relu"
+Activator = Relu
 
 
 def get_eigenvalues(matrix):
-    return np.linalg.eigvalsh(matrix)
+    return np.linalg.eigvals(matrix).real
 
 
 def loss(params, batch):
