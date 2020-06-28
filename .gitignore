@@ -1,4 +1,5 @@
 *.pyc
+*.pdf
 *.so
 *.egg-info
 .ipynb_checkpoints
@@ -13,4 +14,7 @@ venv/
 docs/notebooks/.ipynb_checkpoints/
 docs/_autosummary
 .idea
+/fashion_mnist/*.pdf
+/mnist/*.pdf
+/handsign_mnist/*.pdf
 
