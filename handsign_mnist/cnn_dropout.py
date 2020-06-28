@@ -49,9 +49,9 @@ train_loss_arr = []
 test_loss_arr = []
 test_class_loss_arr = []
 
-dropout_rate = 0.8
-activator = "tanh"
-Activator = Tanh
+dropout_rate = 0.4
+activator = "relu"
+Activator = Relu
 
 
 def get_eigenvalues(matrix):
@@ -171,16 +171,16 @@ if __name__ == "__main__":
         eigv8 = onp.asarray(get_eigenvalues(kernels[8]))
         eigv9 = onp.asarray(get_eigenvalues(kernels[9]))
 
-        eigenvalues0.append(eigv0)
-        eigenvalues1.append(eigv1)
-        eigenvalues2.append(eigv2)
-        eigenvalues3.append(eigv3)
-        eigenvalues4.append(eigv4)
-        eigenvalues5.append(eigv5)
-        eigenvalues6.append(eigv6)
-        eigenvalues7.append(eigv7)
-        eigenvalues8.append(eigv8)
-        eigenvalues9.append(eigv9)
+        eigenvalues0.append(np.sort(eigv0))
+        eigenvalues1.append(np.sort(eigv1))
+        eigenvalues2.append(np.sort(eigv2))
+        eigenvalues3.append(np.sort(eigv3))
+        eigenvalues4.append(np.sort(eigv4))
+        eigenvalues5.append(np.sort(eigv5))
+        eigenvalues6.append(np.sort(eigv6))
+        eigenvalues7.append(np.sort(eigv7))
+        eigenvalues8.append(np.sort(eigv8))
+        eigenvalues9.append(np.sort(eigv9))
 
     df0 = pd.DataFrame(data=eigenvalues0)
     df1 = pd.DataFrame(data=eigenvalues1)
