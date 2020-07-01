@@ -49,8 +49,8 @@ train_loss_arr = []
 test_loss_arr = []
 test_class_loss_arr = []
 
-activator = "relu"
-Activator = Relu
+activator = "sgmd"
+Activator = Sigmoid
 
 
 def get_eigenvalues(matrix):
